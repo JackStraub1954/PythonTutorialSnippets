@@ -46,5 +46,6 @@ class WeatherGetter:
         lon = self.location["lon"]
 
         url = f"https://api.weather.gov/points/{lat},{lon}"
+        print(url)
 
         return self.__api_call(url, this_headers)
