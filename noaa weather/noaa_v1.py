@@ -1,3 +1,5 @@
+from logging import exception
+
 import requests
 from requests.exceptions import HTTPError
 import json
@@ -42,19 +44,19 @@ class Noaa:
             message = f"invalid latitude ({lat}) and/or longitude ({lon})"
             raise exception(message)
         url = f"https://api.weather.gov/points/{lat},{lon}"
-        response = self.__api_call(url)
+        response = self.__api_call(url)#, headers)
         if response is not None:
-            props = points["Properties"]
-            self.grid_id = properties["gridId"]
-            self.grid_x = properties["gridX"]
-            self.grid_y = properties["gridY"]
+            props = response["properties"]
+            self.grid_id = props["gridId"]
+            self.grid_x = props["gridX"]
+            self.grid_y = props["gridY"]
 
     def __api_call(self, url, headers=class_headers, parameters=None):
         print("***" + str(url))
-        print("###" + headers)
+        print("###" + str(headers))
         decoded_response = None
         try:
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, params=parameters)
             self.latest_response = response
             print("    ### " + str(response.url))
             response.raise_for_status()
