@@ -6,3 +6,4 @@ tomtom = TomTom(street_number="16811", street="423rd place SE", city="North Bend
 result = tomtom.search_by_region()
 print("*********************")
 print(result)
+print(result["results"][0])

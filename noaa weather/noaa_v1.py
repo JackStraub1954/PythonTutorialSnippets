@@ -4,6 +4,8 @@ import json
 
 
 class Noaa:
+    class_headers = {"User-Agent": "(python_weather_demo, johnstraub1954@gmail.com)"}
+
     def __init__(
             self,
             lat: float = None,
@@ -26,8 +28,31 @@ class Noaa:
         self.latest_error = None
         self.latest_url = None
 
-    def __api_call(self, url, headers):
+    def get_grid_points(
+            self,
+            lat=None,
+            lon=None,
+            headers={"User-Agent": "(python_weather_demo, johnstraub1954@gmail.com)"}
+    ):
+        if lat is None:
+            lat = self.lat
+        if lon is None:
+            lon = self.lon
+        if lat is None or lon is None:
+            message = f"invalid latitude ({lat}) and/or longitude ({lon})"
+            raise exception(message)
+        url = f"https://api.weather.gov/points/{lat},{lon}"
+        response = self.__api_call(url)
+        if response is not None:
+            props = points["Properties"]
+            self.grid_id = properties["gridId"]
+            self.grid_x = properties["gridX"]
+            self.grid_y = properties["gridY"]
+
+    def __api_call(self, url, headers=class_headers, parameters=None):
         print("***" + str(url))
+        print("###" + headers)
+        decoded_response = None
         try:
             response = requests.get(url, headers=headers)
             self.latest_response = response
@@ -35,12 +60,13 @@ class Noaa:
             response.raise_for_status()
 
             if response.status_code == 200:
-                return json.loads(response.content.decode('utf-8'))
-            else:
-                return None
+                decoded_response = json.loads(response.content.decode('utf-8'))
+
         except HTTPError as http_err:
             self.latest_error = http_err
             print(f'HTTP error occurred: {http_err}')
         except Exception as err:
             self.latest_error = err
             print(f'Other error occurred: {err}')
+
+        return decoded_response

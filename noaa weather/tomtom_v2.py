@@ -63,6 +63,7 @@ class TomTom:
         if self.postal_code is not None:
             # url += "&postalCode=" + self.postal_code
             params["postalCode"] = self.postal.code
+        print("?????")
         print(url)
         api_response = self.__api_call(url, params=params)
 
@@ -70,11 +71,13 @@ class TomTom:
         if api_response is not None:
             result0 = api_response["results"][0]
             print(result0)
+        return api_response
 
     def __api_call(self, url, headers=None, params=None):
         decoded_response = None
         try:
             response = requests.get(url, headers=headers, params=params)
+            print(";;;;;")
             print(response.url)
             response.raise_for_status()
             if response.status_code == 200:
