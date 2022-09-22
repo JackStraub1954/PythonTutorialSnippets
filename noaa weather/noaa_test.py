@@ -7,3 +7,25 @@ if noaaObj.latest_response is not None:
     print(message)
 else:
     print(noaaObj.latest_error)
+
+print("######## STATIONS ########")
+response = noaaObj.get_stations()
+if response is not None:
+    print(">>> " + str(response))
+else:
+    print( ">>> " + str(noaaObj.latest_error))
+
+print("######## OFFICE ID ########")
+response = noaaObj.get_office("SEW")
+if response is not None:
+    print(">>> " + str(response))
+    print(">>> " + str(response["address"]))
+else:
+    print( ">>> " + str(noaaObj.latest_error))
+
+print("######## FORECAST ########")
+response = noaaObj.get_forecast("SEW")
+if response is not None:
+    print(">>> " + str(response))
+else:
+    print( ">>> " + str(noaaObj.latest_error))
