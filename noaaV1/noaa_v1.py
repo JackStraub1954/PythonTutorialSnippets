@@ -51,15 +51,15 @@ class Noaa:
         if grid_y is None:
             grid_y = self.grid_y
         if grid_id is None or grid_x is None or grid_y is None:
-            message = "invalid grid coordinates for forecast ("\
-                + f"(gridID={grid_id}, gridX={grid_x}, gridY={grid_y}"\
-                + "/forecast"
+            message = "invalid grid coordinates for forecast (" \
+                      + f"(gridID={grid_id}, gridX={grid_x}, gridY={grid_y}" \
+                      + "/forecast"
             raise exception(message)
         parameters = None
         if self.units is not None:
             parameters = {"units": self.units}
-        url = "https://api.weather.gov/gridpoints/"\
-            + f"{grid_id}/{grid_x},{grid_y}/forecast"
+        url = "https://api.weather.gov/gridpoints/" \
+              + f"{grid_id}/{grid_x},{grid_y}/forecast"
         response = self.__api_call(url, parameters=parameters)
         return response
 
@@ -76,12 +76,12 @@ class Noaa:
         if grid_y is None:
             grid_y = self.grid_y
         if grid_id is None or grid_x is None or grid_y is None:
-            message = "invalid grid coordinates for forecast ("\
-                + f"(gridID={grid_id}, gridX={grid_x}, gridY={grid_y}"\
-                + "/forecast"
+            message = "invalid grid coordinates for forecast (" \
+                      + f"(gridID={grid_id}, gridX={grid_x}, gridY={grid_y}" \
+                      + "/forecast"
             raise exception(message)
-        url = "https://api.weather.gov/gridpoints/"\
-            + f"{grid_id}/{grid_x},{grid_y}/stations"
+        url = "https://api.weather.gov/gridpoints/" \
+              + f"{grid_id}/{grid_x},{grid_y}/stations"
         response = self.__api_call(url)
         return response
 
@@ -104,12 +104,13 @@ class Noaa:
             message = f"invalid latitude ({lat}) and/or longitude ({lon})"
             raise exception(message)
         url = f"https://api.weather.gov/points/{lat},{lon}"
-        response = self.__api_call(url)#, headers)
+        response = self.__api_call(url)  # , headers)
         if response is not None:
             props = response["properties"]
             self.grid_id = props["gridId"]
             self.grid_x = props["gridX"]
             self.grid_y = props["gridY"]
+        return response
 
     def __api_call(self, url, headers=class_headers, parameters=None):
         print("__api_call/url: " + str(url))
