@@ -26,9 +26,22 @@ class Noaa:
         self.station_id = station_id
         self.office_id = office_id
 
+        self.units = "us"
+
         self.latest_response = None
         self.latest_error = None
         self.latest_url = None
+
+    def get_glossary(self):
+        url = "https://api.weather.gov/glossary/"
+        response = self.__api_call(url)
+        return response
+
+    def get_latest_for_station(self, station_id):
+        url = f"https://api.weather.gov/stations/{station_id}/observations/latest"
+        parameters = None
+        response = self.__api_call(url)
+        return response
 
     def get_forecast(self, grid_id=None, grid_x=None, grid_y=None):
         if grid_id is None:
@@ -42,8 +55,16 @@ class Noaa:
                 + f"(gridID={grid_id}, gridX={grid_x}, gridY={grid_y}"\
                 + "/forecast"
             raise exception(message)
+        parameters = None
+        if self.units is not None:
+            parameters = {"units": self.units}
         url = "https://api.weather.gov/gridpoints/"\
             + f"{grid_id}/{grid_x},{grid_y}/forecast"
+        response = self.__api_call(url, parameters=parameters)
+        return response
+
+    def get_station(self, station_id):
+        url = f"https://api.weather.gov/stations/{station_id}"
         response = self.__api_call(url)
         return response
 
