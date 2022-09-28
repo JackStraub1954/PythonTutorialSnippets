@@ -43,7 +43,13 @@ class Noaa:
         response = self.__api_call(url)
         return response
 
-    def get_forecast(self, grid_id=None, grid_x=None, grid_y=None):
+    def get_forecast(
+            self,
+            grid_id: str = None,
+            grid_x: int = None,
+            grid_y: int = None,
+            hourly: bool = False
+    ):
         if grid_id is None:
             grid_id = self.grid_id
         if grid_x is None:
@@ -59,7 +65,9 @@ class Noaa:
         if self.units is not None:
             parameters = {"units": self.units}
         url = "https://api.weather.gov/gridpoints/" \
-              + f"{grid_id}/{grid_x},{grid_y}/forecast"
+              + f"{grid_id}/{grid_x},{grid_y}/forecast/"
+        if hourly:
+            url += "hourly/"
         response = self.__api_call(url, parameters=parameters)
         return response
 

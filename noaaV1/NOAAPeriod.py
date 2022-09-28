@@ -14,7 +14,7 @@ class NOAAPeriod:
         self.start_time: datetime = dateutil.parser.parse(period["startTime"])
         self.end_time: datetime = dateutil.parser.parse(period["endTime"])
         self.is_daytime: bool = period["isDaytime"]
-        self.temperature:float = period["temperature"]
+        self.temperature: float = period["temperature"]
         self.temperature_unit: str = period["temperatureUnit"]
         self.temperature_trend: str = period["temperatureTrend"]
         self.wind_speed: str = period["windSpeed"]
@@ -24,5 +24,4 @@ class NOAAPeriod:
         if self.icon_url is not None:
             self.icon = Utils.get_icon_from_url(self.icon_url)
         self.short_forecast: str = period["shortForecast"]
-        self.details_forecast: str = period["detailedForecast"]
-
+        self.detailed_forecast: str = period["detailedForecast"]

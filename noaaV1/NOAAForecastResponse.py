@@ -12,3 +12,6 @@ class NoaaForecastResponse:
         result = {"lat": lat, "lon": lon}
         return result
 
+    def get_num_periods(self) -> int:
+        num_periods: int = len(self.response["properties"]["periods"])
+        return num_periods
